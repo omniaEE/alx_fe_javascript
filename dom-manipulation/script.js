@@ -61,6 +61,7 @@ async function syncQuotes() {
   saveQuotes();
 
   // Notify user of updates or conflicts
+  alert("Quotes synced with server!");
   const notificationElement = document.getElementById("notification");
   notificationElement.innerHTML = `Quotes synced with server. ${mergedQuotes.length} quotes in total.`;
   if (mergedQuotes.some(quote => quote.conflictResolved)) {
@@ -92,8 +93,48 @@ function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// Initialize the application
-loadQuotes();
-createAddQuoteForm();
-updateCategories();
-loadLastSelectedFilter();
+// Function to create the add quote form
+function createAddQuoteForm() {
+  const addQuoteForm = document.getElementById("addQuoteForm");
+  addQuoteForm.innerHTML = `
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <button onclick="addQuote()">Add Quote</button>
+  `;
+}
+
+// Function to add a new quote
+function addQuote() {
+  const newQuoteText = document.getElementById("newQuoteText").value;
+  const newQuoteCategory = document.getElementById("newQuoteCategory").value;
+  if (newQuoteText && newQuoteCategory) {
+    const newQuote = { text: newQuoteText, category: newQuoteCategory };
+    quotes.push(newQuote);
+    saveQuotes();
+    document.getElementById("newQuoteText").value = "";
+    document.getElementById("newQuoteCategory").value = "";
+  }
+}
+
+// Function to update categories
+function updateCategories() {
+  const categoryFilter = document.getElementById("categoryFilter");
+  categoryFilter.innerHTML = `
+    <option value="all">All Categories</option>
+  `;
+  const categories = quotes.reduce((acc, quote) => {
+    if (!acc.includes(quote.category)) {
+      acc.push(quote.category);
+    }
+    return acc;
+  }, []);
+  categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.text = category;
+    categoryFilter.appendChild(option);
+  });
+}
+
+// Function to filter quotes
+function filterQuotes
