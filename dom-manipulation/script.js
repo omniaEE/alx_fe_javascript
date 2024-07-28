@@ -1,6 +1,6 @@
 let quotes = [];
 let selectedCategory = "all";
-const apiUrl = "https://jsonplaceholder.typicode.com/quotes"; // Replace with your mock API URL
+const apiUrl ="https://jsonplaceholder.typicode.com/posts"; 
 // Function to load quotes from local storage
 function loadQuotes() {
     const storedQuotes = localStorage.getItem("quotes");
