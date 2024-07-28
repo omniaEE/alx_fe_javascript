@@ -4,6 +4,7 @@ const apiUrl = "https://jsonplaceholder.typicode.com/posts";
 "Blob"
 "FileReader", "readAsText"
 "showRandomQuote"
+"newQuote"
 
 // Function to fetch quotes from the server
 async function fetchQuotesFromServer() {
