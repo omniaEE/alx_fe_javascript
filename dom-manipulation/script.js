@@ -87,6 +87,8 @@ function loadQuotes() {
     ];
     saveQuotes();
   }
+  populateCategories();
+  restoreSelectedCategory();
 }
 
 // Function to save quotes to local storage
@@ -134,4 +136,4 @@ function populateCategories() {
 
 // Function to filter quotes
 function filterQuotes() {
-  const selectedCategory = document.getElementById("categoryFilter").value;
+  const selectedCategory
