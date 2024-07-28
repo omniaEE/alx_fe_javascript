@@ -11,4 +11,15 @@
   <button id="newQuote">Show New Quote</button>
   <select id="categoryFilter" onchange="filterQuotes()">
     <option value="all">All Categories</option>
-    <!-- Dynam
+    <!-- Dynamically populated categories -->
+  </select>
+  <div id="addQuoteForm">
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <button onclick="addQuote()">Add Quote</button>
+  </div>
+  <button id="exportToJson">Export to JSON</button>
+  <input id="importFile" type="file" />
+  <script src="script.js"></script>
+</body>
+</html>
