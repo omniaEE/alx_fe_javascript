@@ -42,22 +42,18 @@ function populateCategories() {
 // Function to filter quotes
 function filterQuotes() {
     const selectedCategory = document.getElementById("categoryFilter").value;
-    const quoteList = document.getElementById("quoteList");
-    quoteList.innerHTML = "";
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.innerHTML = "";
 
     if (selectedCategory === "all") {
-        quotes.forEach(quote => {
-            const quoteElement = document.createElement("li");
-            quoteElement.textContent = quote.text;
-            quoteList.appendChild(quoteElement);
-        });
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+        quoteDisplay.textContent = randomQuote.text;
     } else {
         const filteredQuotes = quotes.filter(quote => quote.category === selectedCategory);
-        filteredQuotes.forEach(quote => {
-            const quoteElement = document.createElement("li");
-            quoteElement.textContent = quote.text;
-            quoteList.appendChild(quoteElement);
-        });
+        const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
+        const randomQuote = filteredQuotes[randomIndex];
+        quoteDisplay.textContent = randomQuote.text;
     }
     saveSelectedCategory();
 }
