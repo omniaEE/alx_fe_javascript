@@ -32,17 +32,6 @@ function showRandomQuote() {
   sessionStorage.setItem("lastViewedQuote", JSON.stringify(quote));
 }
 
-// Function to create and add a new quote form
-function createAddQuoteForm() {
-  const addQuoteForm = document.createElement("div");
-  addQuoteForm.innerHTML = `
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-    <button onclick="addQuote()">Add Quote</button>
-  `;
-  document.body.appendChild(addQuoteForm);
-}
-
 // Function to add a new quote to the quotes array and update the DOM
 function addQuote() {
   const newQuoteText = document.getElementById("newQuoteText").value;
@@ -61,6 +50,10 @@ function updateCategories() {
   const categories = [...new Set(quotes.map(quote => quote.category))];
   const categoryFilter = document.getElementById("categoryFilter");
   categoryFilter.innerHTML = "";
+  const allOption = document.createElement("option");
+  allOption.value = "all";
+  allOption.text = "All Categories";
+  categoryFilter.appendChild(allOption);
   categories.forEach(category => {
     const option = document.createElement("option");
     option.value = category;
@@ -72,7 +65,7 @@ function updateCategories() {
 // Function to filter quotes based on the selected category
 function filterQuotes() {
   const selectedCategory = document.getElementById("categoryFilter").value;
-  const filteredQuotes = quotes.filter(quote => quote.category === selectedCategory);
+  const filteredQuotes = quotes.filter(quote => quote.category === selectedCategory || selectedCategory === "all");
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = "";
   filteredQuotes.forEach(quote => {
@@ -93,17 +86,7 @@ function loadLastSelectedFilter() {
   }
 }
 
-// Initialize the application
-loadQuotes();
-createAddQuoteForm();
-updateCategories();
-loadLastSelectedFilter();
-
-// Add event listener to the "Show New Quote" button
-document.getElementById("newQuote").addEventListener("click", showRandomQuote);
-
-// Add event listener to the "Export to JSON" button
-document.getElementById("exportToJson").addEventListener("click", exportToJson);
-
-// Add event listener to the file input for importing quotes
-document.getElementById("importFile").addEventListener("change", importFromJsonFile);
+// Function to export quotes to JSON
+function exportToJson() {
+  const jsonQuotes = JSON.stringify(quotes);
+  const blob = new Blob([jsonQuotes], { type
