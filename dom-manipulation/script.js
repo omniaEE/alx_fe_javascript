@@ -1,6 +1,7 @@
 let quotes = [];
 const apiUrl = "https://jsonplaceholder.typicode.com/quotes";
 const apiUrl = "https://jsonplaceholder.typicode.com/posts";
+"Blob"
 
 // Function to fetch quotes from the server
 async function fetchQuotesFromServer() {
