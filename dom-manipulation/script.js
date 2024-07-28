@@ -2,7 +2,7 @@
 let quotes = [];
 
 // Simulate server interaction using JSONPlaceholder API
-const apiUrl = "https://jsonplaceholder.typicode.com/quotes";
+const apiUrl = "https://jsonplaceholder.typicode.com/posts";
 
 // Function to fetch quotes from the server
 async function fetchQuotesFromServer() {
