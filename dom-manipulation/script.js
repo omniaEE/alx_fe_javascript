@@ -1,5 +1,6 @@
 // Define an array to store quote objects
 let quotes = [];
+let selectedCategory = "all";
 
 // Simulate server interaction using JSONPlaceholder API
 const apiUrl = "https://jsonplaceholder.typicode.com/posts";
@@ -116,19 +117,14 @@ function addQuote() {
   }
 }
 
-// Function to update categories
-function updateCategories() {
+// Function to populate categories
+function populateCategories() {
   const categoryFilter = document.getElementById("categoryFilter");
   categoryFilter.innerHTML = `
     <option value="all">All Categories</option>
   `;
-  const categories = quotes.reduce((acc, quote) => {
-    if (!acc.includes(quote.category)) {
-      acc.push(quote.category);
-    }
-    return acc;
-  }, []);
-  categories.forEach(category => {
+  const uniqueCategories = [...new Set(quotes.map(quote => quote.category))];
+  uniqueCategories.forEach(category => {
     const option = document.createElement("option");
     option.value = category;
     option.text = category;
@@ -137,4 +133,5 @@ function updateCategories() {
 }
 
 // Function to filter quotes
-function filterQuotes
+function filterQuotes() {
+  const selectedCategory = document.getElementById("categoryFilter").value;
