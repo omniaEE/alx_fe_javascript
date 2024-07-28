@@ -167,53 +167,20 @@ async function syncQuotes() {
   }
 }
 
-// Function to periodically fetch and sync quotes
-setInterval(syncQuotes, 30000); // Sync every 30 seconds
-
-// Function to load quotes from local storage
-function loadQuotes() {
-  const storedQuotes = localStorage.getItem("quotes");
-  if (storedQuotes) {
-    quotes = JSON.parse(storedQuotes);
-  } else {
-    quotes = [
-      { text: "Believe you can and you're halfway there.", category: "Inspirational" },
-      { text: "The only way to do great work is to love what you do.", category: "Motivational" },
-      { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Success" },
-      // Add more quotes as needed
-    ];
-    saveQuotes();
-  }
-}
-
-// Function to save quotes to local storage
-function saveQuotes() {
-  localStorage.setItem("quotes", JSON.stringify(quotes));
-}
-
-// Function to load quotes from local storage
-function loadQuotes() {
-    const storedQuotes = localStorage.getItem("quotes");
-    if (storedQuotes) {
-        quotes = JSON.parse(storedQuotes);
-    } else {
-        quotes = [];
-        fetchQuotesFromServer();
-    }
-    populateCategories();
-    restoreSelectedCategory();
-}
+let quotes = [];
+let selectedCategory = "all";
+const apiUrl = "https://jsonplaceholder.typicode.com/quotes"; // Replace with your mock API URL
 
 // Function to fetch quotes from server
 function fetchQuotesFromServer() {
     fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
+     .then(response => response.json())
+     .then(data => {
             quotes = data;
             saveQuotes();
             notifyUser("Data fetched from server successfully!");
         })
-      .catch(error => {
+     .catch(error => {
             console.error("Error fetching data from server:", error);
             notifyUser("Error fetching data from server. Please try again later.");
         });
@@ -228,13 +195,13 @@ function postQuoteToServer(quote) {
             "Content-Type": "application/json"
         }
     })
-      .then(response => response.json())
-      .then(data => {
+     .then(response => response.json())
+     .then(data => {
             quotes.push(data);
             saveQuotes();
             notifyUser("Quote posted to server successfully!");
         })
-      .catch(error => {
+     .catch(error => {
             console.error("Error posting quote to server:", error);
             notifyUser("Error posting quote to server. Please try again later.");
         });
@@ -285,7 +252,6 @@ window.onload = loadQuotes;
 
 // Start syncing quotes with server
 syncQuotes();
-
 // Initialize the application
 loadQuotes();
 createAddQuoteForm();
