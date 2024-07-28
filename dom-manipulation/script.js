@@ -1,5 +1,6 @@
 let quotes = [];
 let selectedCategory = "all";
+const apiUrl = "https://jsonplaceholder.typicode.com/quotes"; // Replace with your mock API URL
 
 // Function to load quotes from local storage
 function loadQuotes() {
@@ -7,13 +8,13 @@ function loadQuotes() {
     if (storedQuotes) {
         quotes = JSON.parse(storedQuotes);
     } else {
-        quotes = [
-            { text: "Believe you can and you're halfway there.", category: "Inspirational" },
-            { text: "The only way to do great work is to love what you do.", category: "Motivational" },
-            { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Success" },
-            // Add more quotes as needed
-        ];
-        saveQuotes();
+        quotes = [];
+        fetch(apiUrl)
+           .then(response => response.json())
+           .then(data => {
+                quotes = data;
+                saveQuotes();
+            });
     }
     populateCategories();
     restoreSelectedCategory();
@@ -72,8 +73,54 @@ function restoreSelectedCategory() {
     }
 }
 
+// Function to simulate periodic data fetching from the server
+function syncData() {
+    fetch(apiUrl)
+       .then(response => response.json())
+       .then(data => {
+            const serverQuotes = data;
+            const localQuotes = quotes;
+            const mergedQuotes = mergeQuotes(localQuotes, serverQuotes);
+            quotes = mergedQuotes;
+            saveQuotes();
+            notifyUser("Data synced successfully!");
+        })
+       .catch(error => {
+            console.error("Error syncing data:", error);
+            notifyUser("Error syncing data. Please try again later.");
+        });
+}
+
+// Function to merge local and server quotes
+function mergeQuotes(localQuotes, serverQuotes) {
+    const mergedQuotes = [...localQuotes];
+    serverQuotes.forEach(serverQuote => {
+        const localQuote = localQuotes.find(quote => quote.id === serverQuote.id);
+        if (localQuote) {
+            // Conflict resolution: server's data takes precedence
+            mergedQuotes[mergedQuotes.indexOf(localQuote)] = serverQuote;
+        } else {
+            mergedQuotes.push(serverQuote);
+        }
+    });
+    return mergedQuotes;
+}
+
+// Function to notify user of data sync or conflict resolution
+function notifyUser(message) {
+    const notificationElement = document.getElementById("notification");
+    notificationElement.textContent = message;
+    notificationElement.style.display = "block";
+    setTimeout(() => {
+        notificationElement.style.display = "none";
+    }, 3000);
+}
+
 // Call loadQuotes when the page loads
 window.onload = loadQuotes;
 
 // Add event listener to category filter dropdown
 document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
+
+// Simulate periodic data fetching every 5 minutes
+setInterval(syncData, 300000);
