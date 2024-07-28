@@ -18,6 +18,8 @@ function loadQuotes() {
     populateCategories();
     restoreSelectedCategory();
 }
+// 
+alert("Quotes synced with server!");
 // Function to save quotes to local storage
 function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
